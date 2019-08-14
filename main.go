@@ -30,6 +30,7 @@ func main() {
 	router.HandleFunc("/events", createEvent).Methods("POST")
 	router.HandleFunc("/events/{id}", selectEvent).Methods("GET")
 	router.HandleFunc("/events/update/{id}", updateEvent).Methods("PATCH")
+	router.HandleFunc("/events/delete/{id}", deleteEvent).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":9090", router))
 }
 
@@ -165,4 +166,6 @@ func deleteEvent(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 	delEvent.Exec(eventID)
+
+	json.NewEncoder(w).Encode(Response{false, "Delete event success"})
 }
